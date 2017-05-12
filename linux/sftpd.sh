@@ -1,6 +1,6 @@
 #!/bin/bash
 ID=${2:-default}
-SFTPD_HOME=${SFTPD_HOME:-/opt/sftpd}
+SFTPD_HOME=${SFTPD_HOME:-/sftphome/sftp/}
 SFTPD_MEM_MB=${SFTPD_MEM_MB:-64}
 SFTPD_OPTS_DEF="-verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps -showversion -XX:+PrintCommandLineFlags -XX:-PrintFlagsFinal"
 SFTPD_OPTS="${SFTPD_OPTS:-${SFTPD_OPTS_DEF}}"

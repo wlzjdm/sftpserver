@@ -152,7 +152,7 @@ public class Server implements PasswordAuthenticator, PublickeyAuthenticator {
 				final String user = tok[0];
 				final String auth = tok[1];
 				db.setValue(user, Config.PROP_PWD, auth);
-				db.setValue(user, Config.PROP_HOME, htHome);
+				db.setValue(user, Config.PROP_HOME, htHome + "/" + user);
 				db.setValue(user, Config.PROP_ENABLED, htEnabled);
 				db.setValue(user, Config.PROP_ENABLE_WRITE, htEnableWrite);
 				c++;
@@ -266,6 +266,7 @@ public class Server implements PasswordAuthenticator, PublickeyAuthenticator {
 	@Override
 	public boolean authenticate(final String username, final String password, final ServerSession session) {
 		LOG.info("Request auth (Password) for username=" + username);
+		LOG.debug("enter_password=" + password);
 		if ((username != null) && (password != null)) {
 			return db.checkUserPassword(username, password);
 		}
@@ -346,7 +347,13 @@ public class Server implements PasswordAuthenticator, PublickeyAuthenticator {
 		private final void setValue(final String user, final String key, final Object value) {
 			if ((user == null) || (key == null) || (value == null))
 				return;
-			db.setProperty(PROP_BASE_USERS + "." + user + "." + key, String.valueOf(value));
+			
+			/*
+			 * if sftpd.properties configure user properties then use it , otherwise use the default
+			 */
+			if(db.getProperty(PROP_BASE_USERS + "." + user + "." + key) == null){
+				db.setProperty(PROP_BASE_USERS + "." + user + "." + key, String.valueOf(value));
+			}
 		}
 
 		public boolean isEnabledUser(final String user) {
@@ -372,6 +379,7 @@ public class Server implements PasswordAuthenticator, PublickeyAuthenticator {
 					return authOk;
 				}
 				final boolean isCrypted = PasswordEncrypt.isCrypted(value);
+				LOG.debug("enter_password=" + pwd + ", configuer_password=" + value);
 				authOk = isCrypted ? PasswordEncrypt.checkPassword(value, pwd) : value.equals(pwd);
 				sb.append(isCrypted ? "(encrypted)" : "(unencrypted)");
 				traceInfo = isCrypted;

@@ -48,7 +48,7 @@ grant {
   permission java.io.FilePermission "${sftp.home}/keys/hostkey.ser", "read, write";
   permission java.io.FilePermission "${sftp.home}/keys/hostkey.pem", "read, write";
   // Home for Users
-  permission java.io.FilePermission "${sftp.home}/home/-", "read, write, delete";
+  permission java.io.FilePermission "${sftp.home}/../users/-", "read, write, delete";
   // Directory for logs (if use log4j)
   permission java.io.FilePermission "${sftp.home}/log/-", "read, write";
   //
