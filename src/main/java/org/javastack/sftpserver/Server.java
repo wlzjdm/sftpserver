@@ -175,6 +175,10 @@ public class Server implements PasswordAuthenticator, PublickeyAuthenticator {
 				BuiltinCompressions.delayedZlib));
 	}
 
+	/**
+	 * load sftpd.properties
+	 * @return sftp global configuration
+	 */
 	protected Config loadConfig() {
 		final Properties db = new Properties();
 		InputStream is = null;
